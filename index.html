@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<HTML>
+    <HEAD>
+        <META http-equiv="Content-Type" content="text/html;
+              charset=UTF-8">
+        <TITLE>Пример выполнения лабораторной работы # 3</TITLE>
+    </HEAD>
+
+    <BODY>
+        <H1>Создание документов HTML с использованием технологии PHP</H1>
+        <HR>
+        <FORM method="POST">
+            Введите имя папки:<BR>
+            <INPUT type="text" name="filename" size="50"
+            <?
+            //Проверка наличия значения переменной filename
+            if (isset($filename)) {
+                //Вывод имени папки
+                echo stripslashes("value=\"$filename\"");
+            }
+            ?>
+                   <BR>
+            <H3>Содержимое каталога:</H3>
+            <?php
+            $textex = $_POST[filename];
+            $fp = fopen("$textex", "r"); // Открываем файл в режиме чтения
+            if ($fp) {
+                while (!feof($fp)) {
+                    $mytext = fgets($fp, 999);
+                    $files = scandir($mytext);
+                    echo '<ol>';
+                    foreach ($files as $value) {
+                        if ($value != '.' and $value != '..') {
+                            echo '<li>' . $value . '</li><br>';
+                        }
+                        echo '</ol>';
+                    }
+                }
+            } else {
+                echo "Ошибка при открытии файла. <br> Возможно его не существует. <br>";
+            }
+            fclose($fp);
+            ?>
+            <BR>
+            <INPUT type="submit"><BR>
+        </FORM>
+    </BODY>
+</HTML>
